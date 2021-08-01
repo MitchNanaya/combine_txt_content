@@ -3,8 +3,9 @@ import pathlib
 import io
 import os
 def get_file_names(full_path):
-    return list(pathlib.Path(full_path).glob("*.txt"))
-
+    files = sorted(pathlib.Path(full_path).glob("*.txt"),key = os.path.getmtime)
+    return list(files)
+    
 def load_file_and_write_to_output(list_file,output_file):
     write_file = open(output_file,"a", encoding="utf-8") #open file on append mode
     for file in list_file:
@@ -24,7 +25,10 @@ def main():
     files = get_file_names(input_folder_name)
     for f in files:
         print(f)
-    load_file_and_write_to_output(files,output_file_name)
+    if len(files) > 0:
+        load_file_and_write_to_output(files,output_file_name)
+    else:
+        print("No file")
 
 if __name__ == "__main__":
     main() 
